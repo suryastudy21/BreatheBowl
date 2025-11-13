@@ -358,10 +358,26 @@
         "4-4-4-4": [4,4,4,4],
         "4-7-8": [4,7,8,0],
         "6-7-8": [6,7,8,0],
+        "box (4)": [4,4,4,4],
         "custom": [4,4,4,4]
       };
 
       const [presets,setPresets] = useState(initialPresets);
+      // Load saved presets at startup
+      useEffect(() => {
+        const saved = localStorage.getItem("breathing-presets");
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            if (parsed && typeof parsed === "object") {
+              setPresets(parsed);
+            }
+          } catch (e) {
+            console.error("Error loading presets:", e);
+          }
+        }
+      }, []);
+
       const [presetName,setPresetName] = useState('4-4-4-4');
       const [durations,setDurations] = useState(initialPresets['4-4-4-4']);
       const [running,setRunning] = useState(false);
@@ -447,6 +463,15 @@
       function addPattern(){ const autoName = durations.join('-').replaceAll(' ',''); const name = newPatternName.trim() || autoName; if(!name) return; setPresets(p=>({...p,[name]:[...durations]})); setPresetName(name); setNewPatternName(''); }
 
       function deletePattern(name){ if(!name || !presets[name]) return; const mustKeep=['custom']; if(mustKeep.includes(name)) return; const copy = {...presets}; delete copy[name]; setPresets(copy); if(presetName===name) setPresetName('custom'); }
+      // Save presets whenever they change
+      useEffect(() => {
+        try {
+          localStorage.setItem("breathing-presets", JSON.stringify(presets));
+        } catch (e) {
+          console.error("Error saving presets:", e);
+        }
+      }, [presets]);
+
 
       const presetKeys = Object.keys(presets).filter(k=>k!=='custom'); if(presets.custom) presetKeys.push('custom');
 
