@@ -18,25 +18,22 @@
 
       /* --- dimmer light-cool overlay (non-warm, non-dark) --- */
 
-/* --- brighter cards in dark warm --- */
-.app-root.dark.warm {
-  --card-bg: rgba(52,26,16,0.92); /* lighter/brighter card surface */
-}
+      /* --- brighter cards in dark warm --- */
+      .app-root.dark.warm {
+        --card-bg: rgba(52,26,16,0.92); /* lighter/brighter card surface */
+      }
 
-.app-root:not(.dark):not(.warm) {
- 
-  /* overall base */
---bg: #c8cdd0;   /* duskier fog */
---card-bg: #e1e5e7;   /* soft cool porcelain cardstock */
+      .app-root:not(.dark):not(.warm) {
+        /* overall base */
+        --bg: #c8cdd0;   /* duskier fog */
+        --card-bg: #e1e5e7;   /* soft cool porcelain cardstock */
+      }
 
-}
+      /* subtle lift if you want to override card rendering */
+      .app-root.dark .card{
+        background: color-mix(in srgb, var(--card-bg) 72%, rgba(255,255,255,0.02) 28%);
+      }
 
-/* subtle lift if you want to override card rendering */
-.app-root.dark .card{
-  background: color-mix(in srgb, var(--card-bg) 72%, rgba(255,255,255,0.02) 28%);
-}
-
-      
       /* background + surface */
       --bg: #f2f5f7;               /* gentle gray-blue background */
       --card-bg: #ffffff;          /* clean surface */
@@ -61,38 +58,38 @@
     }
 
     /* Warm mode for light theme */
-.app-root.warm {
-  /* warmer, cozier light palette — bumped contrast so elements read clearly */
-  --bg: #e6d3c2;         /* slightly darker warm parchment (base) */
-  --card-bg: #f7ece2;    /* noticeably lighter card surface for separation */
+    .app-root.warm {
+      /* warmer, cozier light palette — bumped contrast so elements read clearly */
+      --bg: #e6d3c2;         /* slightly darker warm parchment (base) */
+      --card-bg: #f7ece2;    /* noticeably lighter card surface for separation */
 
-  --text: #332116;       /* richer cocoa — improves readability */
-  --muted: #76523f;      /* warmer, slightly deeper muted brown */
+      --text: #332116;       /* richer cocoa — improves readability */
+      --muted: #76523f;      /* warmer, slightly deeper muted brown */
 
-  --accent: #d9753f;     /* richer amber */
-  --accent-2: #b9532e;   /* deeper terracotta for contrast */
+      --accent: #d9753f;     /* richer amber */
+      --accent-2: #b9532e;   /* deeper terracotta for contrast */
 
-  /* stronger, warmer ring so it reads on the new bg/card */
-  --ring: rgba(217,120,65,0.12);   /* visible but still soft */
-  --input-border: #ead5c2;
+      /* stronger, warmer ring so it reads on the new bg/card */
+      --ring: rgba(217,120,65,0.12);   /* visible but still soft */
+      --input-border: #ead5c2;
 
-  --water-1: #e79e71;    /* slightly richer warm peach for animation */
-  --water-2: #c95f34;    /* more saturated terracotta for depth */
+      --water-1: #e79e71;    /* slightly richer warm peach for animation */
+      --water-2: #c95f34;    /* more saturated terracotta for depth */
 
-  --svg-stroke: #d9c9bd; /* a touch darker so icons are legible */
-  --inner-rim: #efe6de;  /* subtle inner rim highlight */
+      --svg-stroke: #d9c9bd; /* a touch darker so icons are legible */
+      --inner-rim: #efe6de;  /* subtle inner rim highlight */
 
-  --paper-vignette:
-    radial-gradient(1200px 600px at 10% 10%, rgba(255,244,236,0.18), transparent 8%),
-    radial-gradient(900px 500px at 90% 90%, rgba(255,238,226,0.10), transparent 10%);
+      --paper-vignette:
+        radial-gradient(1200px 600px at 10% 10%, rgba(255,244,236,0.18), transparent 8%),
+        radial-gradient(900px 500px at 90% 90%, rgba(255,238,226,0.10), transparent 10%);
 
-  /* slightly stronger cozy glow for subtle emphasis */
-  --cozy-glow: 0 12px 36px rgba(224,120,48,0.08);
+      /* slightly stronger cozy glow for subtle emphasis */
+      --cozy-glow: 0 12px 36px rgba(224,120,48,0.08);
 
-  /* extra helpers */
-  --card-border: rgba(52,32,22,0.04); /* very subtle warm border to define cards */
-  --card-shadow: 0 8px 22px rgba(45,25,14,0.06);
-}
+      /* extra helpers */
+      --card-border: rgba(52,32,22,0.04); /* very subtle warm border to define cards */
+      --card-shadow: 0 8px 22px rgba(45,25,14,0.06);
+    }
 
 
     .dark :root, .dark-root {
@@ -143,207 +140,345 @@
     /* subtle animations for wave */
     .wave-glow{filter:drop-shadow(0 6px 12px rgba(59,130,246,0.12))}
 
-    /* Dark mode — use CSS variables on the .app-root element to switch themes cleanly */
+    /* ===== improved dark theme variables ===== */
+    .app-root.dark {
+      /* ===== Background & Surfaces ===== */
+      --bg: linear-gradient(180deg, #081420 0%, #0d1e2a 50%, #122633 100%);
+      --card-bg: rgba(18, 36, 44, 0.85);
+      --card-backdrop-blur: 10px;
+      --card-shadow: 0 10px 30px rgba(4, 10, 18, 0.45);
 
-  /* ===== improved dark theme variables ===== */
-  .app-root.dark {
-    /* ===== Background & Surfaces ===== */
-    --bg: linear-gradient(180deg, #081420 0%, #0d1e2a 50%, #122633 100%);
-    --card-bg: rgba(18, 36, 44, 0.85);
-    --card-backdrop-blur: 10px;
-    --card-shadow: 0 10px 30px rgba(4, 10, 18, 0.45);
+      /* ===== Text ===== */
+      --text: #e8f3fb;
+      --muted: #96aabb;
 
-    /* ===== Text ===== */
-    --text: #e8f3fb;
-    --muted: #96aabb;
+      /* ===== Accents ===== */
+      --accent: #3fb0b8;
+      --accent-2: #5a9ecf;
 
-    /* ===== Accents ===== */
-    --accent: #3fb0b8;
-    --accent-2: #5a9ecf;
+      /* ===== Interactive Elements ===== */
+      --input-border: rgba(255,255,255,0.06);
+      --ring: rgba(8,24,36,0.35);
 
-    /* ===== Interactive Elements ===== */
-    --input-border: rgba(255,255,255,0.06);
-    --ring: rgba(8,24,36,0.35);
+      /* ===== Water Gradient ===== */
+      --water-1: #4aa2a8;
+      --water-2: #183857;
 
-    /* ===== Water Gradient ===== */
-    --water-1: #4aa2a8;
-    --water-2: #183857;
+      /* ===== SVG & Rims ===== */
+      --svg-stroke: rgba(220,235,245,0.10);
+      --inner-rim: rgba(180,200,215,0.06);
 
-    /* ===== SVG & Rims ===== */
-    --svg-stroke: rgba(220,235,245,0.10);
-    --inner-rim: rgba(180,200,215,0.06);
+      /* ===== Vignette & Glow ===== */
+      --vignette-alpha: 0.10;
+      --wave-glow: rgba(12,70,100,0.15);
 
-    /* ===== Vignette & Glow ===== */
-    --vignette-alpha: 0.10;
-    --wave-glow: rgba(12,70,100,0.15);
+      /* ===== Focus & Active States ===== */
+      --focus-outline: color-mix(in srgb, var(--accent) 40%, white 10%);
 
-    /* ===== Focus & Active States ===== */
-    --focus-outline: color-mix(in srgb, var(--accent) 40%, white 10%);
-  }
+      /* brighter teal just for slider in dark (non-warm) */
+      --slider-water: rgb(86, 140, 150);
+    }
 
-  /* Warm mode for dark theme */
-  .app-root.dark.warm {
-    --bg: linear-gradient(180deg, #2b1810 0%, #140a06 70%);
-    --card-bg: rgba(28,14,8,0.92);
-    --card-backdrop-blur: 12px;
-    --card-shadow: 0 14px 40px rgba(30,12,6,0.6);
+    /* Warm mode for dark theme */
+    .app-root.dark.warm {
+      --bg: linear-gradient(180deg, #2b1810 0%, #140a06 70%);
+      --card-bg: rgba(28,14,8,0.92);
+      --card-backdrop-blur: 12px;
+      --card-shadow: 0 14px 40px rgba(30,12,6,0.6);
 
-    --text: #fff6eb;
-    --muted: #c8a98b;
+      --text: #fff6eb;
+      --muted: #c8a98b;
 
-    --accent: #f5b567;
-    --accent-2: #f29349;
+      --accent: #f5b567;
+      --accent-2: #f29349;
 
-    --input-border: rgba(255,240,220,0.06);
-    --ring: rgba(180,100,40,0.22);
+      --input-border: rgba(255,240,220,0.06);
+      --ring: rgba(180,100,40,0.22);
 
-    --water-1: #d97b3b;
-    --water-2: #8b3a20;
+      --water-1: #d97b3b;
+      --water-2: #8b3a20;
 
-    --svg-stroke: rgba(255,245,235,0.08);
-    --inner-rim: rgba(255,230,210,0.04);
+      --svg-stroke: rgba(255,245,235,0.08);
+      --inner-rim: rgba(255,230,210,0.04);
 
-    --vignette-alpha: 0.22;
-    --wave-glow: rgba(150,80,30,0.20);
+      --vignette-alpha: 0.22;
+      --wave-glow: rgba(150,80,30,0.20);
 
-    /* warmer lantern-like card glow when warm + running */
-    --warm-card-glow: 0 12px 36px rgba(242,150,72,0.08);
-  }
+      /* warmer lantern-like card glow when warm + running */
+      --warm-card-glow: 0 12px 36px rgba(242,150,72,0.08);
 
-  /* ensure title is white in dark mode */
-  .app-root.dark .title { color: #ffffff; }
+      /* override slider color in warm dark: use warm water, not teal */
+      --slider-water: rgb(187, 115, 66); /* R:0.732 G:0.450 B:0.258 */
+    }
 
-  /* better card surface with glass effect */
-  .app-root.dark .card {
-    background: var(--card-bg);
-    backdrop-filter: blur(var(--card-backdrop-blur));
-    -webkit-backdrop-filter: blur(var(--card-backdrop-blur));
-    box-shadow: var(--card-shadow);
-  }
+    /* ensure title is white in dark mode */
+    .app-root.dark .title { color: #ffffff; }
 
-  /* inputs and buttons */
-  .app-root.dark .input-number,
-  .app-root.dark .input-text {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--input-border);
-    color: var(--text);
-  }
+    /* better card surface with glass effect */
+    .app-root.dark .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(var(--card-backdrop-blur));
+      -webkit-backdrop-filter: blur(var(--card-backdrop-blur));
+      box-shadow: var(--card-shadow);
+    }
 
-  /* primary button: ensure readable text on bright accent */
-  .app-root.dark .btn {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.04);
-    color: var(--text);
-    box-shadow: none;
-  }
-  .app-root.dark .btn.primary {
-    background: linear-gradient(180deg,var(--accent) 0%, color-mix(in srgb, var(--accent) 60%, black 8%) 100%);
-    color: #ffffff;
-    border: none;
-    box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 45%, transparent 60%);
-  }
+    /* inputs and buttons */
+    .app-root.dark .input-number,
+    .app-root.dark .input-text {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--input-border);
+      color: var(--text);
+    }
 
-  /* svg/wave visuals */
-  .app-root.dark .svg-frame svg { filter: none; }
-  .app-root.dark svg circle { stroke: var(--svg-stroke); }
-  .app-root.dark .wave-glow { filter: drop-shadow(0 8px 20px var(--wave-glow)); }
-  .app-root.dark path[fill="url(#waterGrad)"] { mix-blend-mode: normal; opacity: 0.96; }
+    /* primary button: ensure readable text on bright accent */
+    .app-root.dark .btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.04);
+      color: var(--text);
+      box-shadow: none;
+    }
+    .app-root.dark .btn.primary {
+      background: linear-gradient(180deg,var(--accent) 0%, color-mix(in srgb, var(--accent) 60%, black 8%) 100%);
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 45%, transparent 60%);
+    }
 
-  /* slightly lighter circles */
-  .app-root.dark circle { stroke: var(--svg-stroke); opacity: 0.9; }
+    /* svg/wave visuals */
+    .app-root.dark .svg-frame svg { filter: none; }
+    .app-root.dark svg circle { stroke: var(--svg-stroke); }
+    .app-root.dark .wave-glow { filter: drop-shadow(0 8px 20px var(--wave-glow)); }
+    .app-root.dark path[fill="url(#waterGrad)"] { mix-blend-mode: normal; opacity: 0.96; }
 
-  /* focus styles for accessibility */
-  .app-root.dark .btn:focus, .app-root.dark .input-number:focus, .app-root.dark .input-text:focus {
-    outline: 2px solid var(--focus-outline);
-    outline-offset: 3px;
-    box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 20%, transparent 80%);
-  }
+    /* slightly lighter circles */
+    .app-root.dark circle { stroke: var(--svg-stroke); opacity: 0.9; }
 
-  /* subtle vignette */
-  .app-root.dark::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(ellipse at center, rgba(0,0,0,var(--vignette-alpha)), transparent 45%);
-  }
+    /* focus styles for accessibility */
+    .app-root.dark .btn:focus,
+    .app-root.dark .input-number:focus,
+    .app-root.dark .input-text:focus {
+      outline: 2px solid var(--focus-outline);
+      outline-offset: 3px;
+      box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 20%, transparent 80%);
+    }
+
+    /* subtle vignette */
+    .app-root.dark::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,var(--vignette-alpha)), transparent 45%);
+    }
 
 
-  /* ===== layout overrides: larger bowl, centered card, full-width controls ===== */
-      .app-root{
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-        box-sizing: border-box;
-      }
+    /* ===== layout overrides: larger bowl, centered card, full-width controls ===== */
+    .app-root{
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
 
-      /* Card becomes a centered flexible column that fills available width */
-      .app-root .card{
-        display: flex !important;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 18px;
-        padding: 28px;
-        width: 100%;
-        max-width: 640px;
-        margin: 0 auto;
-        box-sizing: border-box;
-        background: var(--card-bg, rgba(255,255,255,0.02));
-      }
+    /* Card becomes a centered flexible column that fills available width */
+    .app-root .card{
+      display: flex !important;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      padding: 28px;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      box-sizing: border-box;
+      background: var(--card-bg, rgba(255,255,255,0.02));
+    }
 
-      /* Make the svg-frame much larger so the bowl is the visual focus */
-      .svg-frame{
-        width: 100%;
-        max-width: 640px;
-        height: 420px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+    /* Make the svg-frame much larger so the bowl is the visual focus */
+    .svg-frame{
+      width: 100%;
+      max-width: 640px;
+      height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-      /* SVG scales to fill its container while preserving aspect ratio */
-      .svg-frame svg{
-        width: 100%;
-        height: 100%;
-        display: block;
-        object-fit: contain;
-      }
+    /* SVG scales to fill its container while preserving aspect ratio */
+    .svg-frame svg{
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
 
-      /* Slight scale on the bowl group to make it larger inside the SVG */
-      .svg-frame .bowl, .svg-frame #bowl, .svg-frame g.bowl{
-        transform-origin: 50% 50%;
-        transform: scale(1.08);
-      }
+    /* Slight scale on the bowl group to make it larger inside the SVG */
+    .svg-frame .bowl, .svg-frame #bowl, .svg-frame g.bowl{
+      transform-origin: 50% 50%;
+      transform: scale(1.08);
+    }
 
-      /* Controls occupy full card width and align neatly under the bowl */
-      .controls, .controls-row{
-        width: 100%;
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        justify-content: space-between;
-        box-sizing: border-box;
-      }
+    /* Controls occupy full card width and align neatly under the bowl */
+    .controls, .controls-row{
+      width: 100%;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
 
-      /* Make primary controls (start/stop) fixed width while sliders expand */
-      .controls .btn, .controls-row .btn{
-        flex: 0 0 130px;
-        min-width: 110px;
-      }
-      .controls .slider, .controls .input, .controls-row .slider{
-        flex: 1 1 auto;
-      }
+    /* Make primary controls (start/stop) fixed width while sliders expand */
+    .controls .btn, .controls-row .btn{
+      flex: 0 0 130px;
+      min-width: 110px;
+    }
+    .controls .slider, .controls .input, .controls-row .slider{
+      flex: 1 1 auto;
+    }
 
-      /* For vertical stacking on small screens */
-      @media (max-width: 520px){
-        .card{ padding: 18px; }
-        .svg-frame{ height: 320px; }
-        .controls, .controls-row{ flex-direction: column; align-items: stretch; gap:10px; }
-        .controls .btn, .controls-row .btn{ width: 100%; flex: none; }
-      }
+    /* For vertical stacking on small screens */
+    @media (max-width: 520px){
+      .card{ padding: 18px; }
+      .svg-frame{ height: 320px; }
+      .controls, .controls-row{ flex-direction: column; align-items: stretch; gap:10px; }
+      .controls .btn, .controls-row .btn{ width: 100%; flex: none; }
+    }
+
+    /* ===== Speed control styling ===== */
+    .speed-control{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      background: color-mix(in srgb, var(--card-bg) 88%, var(--muted) 12%);
+      box-shadow: 0 4px 10px var(--ring);
+      min-width: 220px;
+      margin-left: 12px;
+    }
+
+    .speed-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .speed-label{
+      font-size:12px;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      color:var(--muted);
+    }
+
+    .speed-chip{
+      display:inline-flex;
+      align-items:baseline;
+      gap:6px;
+      padding:4px 10px;
+      border-radius:999px;
+      background: color-mix(in srgb, var(--card-bg) 80%, var(--muted) 20%);
+      font-size:12px;
+    }
+
+    .speed-chip-sub{
+      font-size:11px;
+      opacity:0.9;
+    }
+
+    .speed-slider-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .speed-end-label{
+      font-size:11px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    /* wrapper to align the marker with the actual track */
+    .speed-slider-shell{
+      position:relative;
+      flex:1;
+      display:flex;
+      align-items:center;
+    }
+
+    /* center marker at 1x */
+    .speed-slider-shell::before{
+      content:"";
+      position:absolute;
+      left:44%;
+      transform:translateX(-50%);
+      width:2px;
+      height:8px;
+      border-radius:999px;
+      background: color-mix(in srgb, var(--slider-water, var(--water-2)) 60%, var(--card-bg) 40%);
+      opacity:0.85;
+      pointer-events:none;
+    }
+
+    .speed-slider{
+      flex:1;
+      -webkit-appearance:none;
+      appearance:none;
+      background:transparent;
+      width:100%;
+    }
+
+    /* ---------- WebKit (Chrome / Edge / Safari) ---------- */
+    .speed-slider::-webkit-slider-thumb{
+      -webkit-appearance:none;
+      appearance:none;
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background:var(--slider-water, var(--water-2)); /* slider color, theme-aware */
+      box-shadow:0 0 0 3px rgba(0,0,0,0.12);
+      cursor:pointer;
+      border:none;
+      /* center thumb on 4px track */
+      margin-top:-5px;
+    }
+
+    .speed-slider::-webkit-slider-runnable-track{
+      height:4px;
+      border-radius:999px;
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--water-1) 40%, transparent 60%),
+        color-mix(in srgb, var(--water-1) 70%, transparent 30%),
+        color-mix(in srgb, var(--slider-water, var(--water-2)) 100%, transparent 0%)
+      );
+    }
+
+    /* ---------- Firefox ---------- */
+    .speed-slider::-moz-range-thumb{
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background:var(--slider-water, var(--water-2));
+      box-shadow:0 0 0 3px rgba(0,0,0,0.12);
+      cursor:pointer;
+      border:none;
+    }
+
+    .speed-slider::-moz-range-track{
+      height:4px;
+      border-radius:999px;
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--water-1) 40%, transparent 60%),
+        color-mix(in srgb, var(--water-1) 70%, transparent 30%),
+        color-mix(in srgb, var(--slider-water, var(--water-2)) 100%, transparent 0%)
+      );
+    }
   </style>
 </head>
 <body>
@@ -357,11 +492,10 @@
         "4-4-4-4": [4,4,4,4],
         "4-7-8": [4,7,8,0],
         "4-2-8-2": [4,2,8,2]
-        
       };
 
       const [presets,setPresets] = useState(initialPresets);
-      // Load saved presets at startup
+
       useEffect(() => {
         const saved = localStorage.getItem("breathing-presets");
         if (saved) {
@@ -403,7 +537,11 @@
       }
 
       useEffect(()=>{
-        if(!running){ if(rafRef.current) cancelAnimationFrame(rafRef.current); rafRef.current = null; return; }
+        if(!running){
+          if(rafRef.current) cancelAnimationFrame(rafRef.current);
+          rafRef.current = null;
+          return;
+        }
 
         phaseStartRef.current = performance.now();
         lastTimeRef.current = performance.now();
@@ -439,29 +577,85 @@
 
         rafRef.current = requestAnimationFrame(step);
 
-        return ()=>{ if(rafRef.current) cancelAnimationFrame(rafRef.current); rafRef.current = null };
+        return ()=>{
+          if(rafRef.current) cancelAnimationFrame(rafRef.current);
+          rafRef.current = null;
+        };
       },[running,loopIndex,durations,bpmMultiplier]);
 
       function clamp(v,a,b){return Math.min(b,Math.max(a,v))}
 
-      function toggle(){ if(running){ setRunning(false); } else{ setRunning(true); setLoopIndex(0); setPhaseProgress(0); phaseStartRef.current = performance.now(); phaseStartRef.currentStartLevel = waterLevel; } }
+      function toggle(){
+        if(running){
+          setRunning(false);
+        } else{
+          setRunning(true);
+          setLoopIndex(0);
+          setPhaseProgress(0);
+          phaseStartRef.current = performance.now();
+          phaseStartRef.currentStartLevel = waterLevel;
+        }
+      }
 
-      function stopAndReset(){ setRunning(false); setLoopIndex(0); setPhaseProgress(0); setWaterLevel(0); phaseStartRef.current = null; phaseStartRef.currentStartLevel = null }
+      function stopAndReset(){
+        setRunning(false);
+        setLoopIndex(0);
+        setPhaseProgress(0);
+        setWaterLevel(0);
+        phaseStartRef.current = null;
+        phaseStartRef.currentStartLevel = null;
+      }
 
-      function handleCustomChange(i,newVal){ const v = Math.max(0, Number(newVal) || 0); const copy = [...durations]; copy[i] = v; setDurations(copy); setPresetName('custom'); setPresets(p=>({...p, custom: copy})); }
+      function handleCustomChange(i,newVal){
+        const v = Math.max(0, Number(newVal) || 0);
+        const copy = [...durations];
+        copy[i] = v;
+        setDurations(copy);
+        setPresetName('custom');
+        setPresets(p=>({...p, custom: copy}));
+      }
 
       const phaseNames = ['Inhale','Hold','Exhale','Hold'];
-      const currentPhaseName = phaseNames[loopIndex] || '';
       const remaining = Math.max(0,(durations[loopIndex]||0)/Math.max(0.0001,bpmMultiplier)*(1-phaseProgress));
 
-      function speedLabel(v){ const s = Number(v); if(Number.isInteger(s)) return `${Math.round(s)}x`; const two = s.toFixed(2); if(two.endsWith('.00')) return `${Math.round(s)}x`; if(two.endsWith('0')) return `${two.slice(0,-1)}x`; return `${two}x` }
+      function speedLabel(v){
+        const s = Number(v);
+        if(Number.isInteger(s)) return `${Math.round(s)}x`;
+        const two = s.toFixed(2);
+        if(two.endsWith('.00')) return `${Math.round(s)}x`;
+        if(two.endsWith('0')) return `${two.slice(0,-1)}x`;
+        return `${two}x`;
+      }
+
+      function speedDescriptor(v) {
+        if (v < 0.6) return "Very slow";
+        if (v < 0.9) return "Slow";
+        if (v < 1.1) return "Natural";
+        if (v < 1.5) return "Fast";
+        return "Very fast";
+      }
 
       const adjustedDurations = durations.map(d=>d/Math.max(0.0001,bpmMultiplier));
 
-      function addPattern(){ const autoName = durations.join('-').replaceAll(' ',''); const name = newPatternName.trim() || autoName; if(!name) return; setPresets(p=>({...p,[name]:[...durations]})); setPresetName(name); setNewPatternName(''); }
+      function addPattern(){
+        const autoName = durations.join('-').replaceAll(' ','');
+        const name = newPatternName.trim() || autoName;
+        if(!name) return;
+        setPresets(p=>({...p,[name]:[...durations]}));
+        setPresetName(name);
+        setNewPatternName('');
+      }
 
-      function deletePattern(name){ if(!name || !presets[name]) return; const mustKeep=['custom']; if(mustKeep.includes(name)) return; const copy = {...presets}; delete copy[name]; setPresets(copy); if(presetName===name) setPresetName('custom'); }
-      // Save presets whenever they change
+      function deletePattern(name){
+        if(!name || !presets[name]) return;
+        const mustKeep=['custom'];
+        if(mustKeep.includes(name)) return;
+        const copy = {...presets};
+        delete copy[name];
+        setPresets(copy);
+        if(presetName===name) setPresetName('custom');
+      }
+
       useEffect(() => {
         try {
           localStorage.setItem("breathing-presets", JSON.stringify(presets));
@@ -470,29 +664,27 @@
         }
       }, [presets]);
 
+      const presetKeys = Object.keys(presets).filter(k=>k!=='custom');
+      if(presets.custom) presetKeys.push('custom');
 
-      const presetKeys = Object.keys(presets).filter(k=>k!=='custom'); if(presets.custom) presetKeys.push('custom');
-
-      /* compute SVG/wave metrics so the gradient can move with the water */
+      /* compute SVG/wave metrics */
       const cx = 100; const cy = 100; const r = 70;
       const topOfCircle = cy - r; const bottomOfCircle = cy + r;
       const topY = topOfCircle + (1 - waterLevel) * (bottomOfCircle - topOfCircle);
       const waveAmp = 4 + Math.sin(phaseProgress * Math.PI * 2) * 1.5;
       const wavePath = `M0 ${topY} C30 ${topY - waveAmp}, 60 ${topY + waveAmp}, 90 ${topY} C120 ${topY - waveAmp}, 150 ${topY + waveAmp}, 200 ${topY} L200 ${bottomOfCircle} L0 ${bottomOfCircle} Z`;
 
-      /* apply theme classes on the root element for CSS variable consistency */
-      useEffect(()=>{ /* keep documentElement fallback for legacy selectors */
-        if(dark) document.documentElement.classList.add('dark-root'); else document.documentElement.classList.remove('dark-root');
+      useEffect(()=>{
+        if(dark) document.documentElement.classList.add('dark-root');
+        else document.documentElement.classList.remove('dark-root');
       },[dark]);
-
-      /* set body-level classes by returning combined className on the wrapper below */
 
       return (
         <div className={"app-root" + (dark? ' dark' : '') + (warm? ' warm' : '')}>
           <div className="container">
             <div className="header">
               <div className="title">Breathing Bowl</div>
-              <div style={{display:'flex',gap:8,}}>
+              <div style={{display:'flex',gap:8}}>
                 <button className="btn" onClick={()=>setDark(s=>!s)}>{dark? 'Light' : 'Dark'}</button>
                 <button className="btn" onClick={()=>setWarm(w=>!w)}>{warm? 'Warm: On' : 'Warm: Off'}</button>
               </div>
@@ -520,7 +712,6 @@
                         <g className="wave-glow">
                           <path d={wavePath} fill="url(#waterGrad)" opacity="0.98" />
                           <path d={wavePath} fill="var(--water-2)" opacity="0.14" transform="translate(0,6)" />
-
                         </g>
                       </g>
 
@@ -536,10 +727,32 @@
                     <button className="btn primary" onClick={toggle}>{running? 'Pause' : 'Start'}</button>
                     <button className="btn" onClick={stopAndReset}>Stop</button>
 
-                    <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:4,marginLeft:12}}>
-                      <label className="muted">Speed</label>
-                      <span style={{fontSize:12,color:'var(--muted)'}}>{speedLabel(bpmMultiplier)}</span>
-                      <input className="range" type="range" min="0.25" max="2" step="0.05" value={bpmMultiplier} onChange={(e)=>setBpmMultiplier(Number(e.target.value))} />
+                    <div className="speed-control">
+                      <div className="speed-header">
+                        <span className="speed-label">Speed</span>
+                        <span className="speed-chip">
+                          {speedLabel(bpmMultiplier)}
+                          <span className="speed-chip-sub">
+                            {speedDescriptor(bpmMultiplier)}
+                          </span>
+                        </span>
+                      </div>
+
+                      <div className="speed-slider-row">
+                        <span className="speed-end-label">Slower</span>
+                        <div className="speed-slider-shell">
+                          <input
+                            className="speed-slider"
+                            type="range"
+                            min="0.25"
+                            max="2"
+                            step="0.05"
+                            value={bpmMultiplier}
+                            onChange={(e)=>setBpmMultiplier(Number(e.target.value))}
+                          />
+                        </div>
+                        <span className="speed-end-label">Faster</span>
+                      </div>
                     </div>
                   </div>
 
@@ -598,7 +811,7 @@
                     <label style={{fontSize:13,fontWeight:600}}>Preview</label>
                     <div className="muted" style={{marginTop:8}}>
                       <div>Cycle (input): {durations.map(d=>`${d}s`).join(' • ')}</div>
-                      <div>Speed: {speedLabel(bpmMultiplier)}</div>
+                      <div>Speed: {speedLabel(bpmMultiplier)} ({speedDescriptor(bpmMultiplier)})</div>
                       <div style={{marginTop:6}}>Adjusted cycle: {adjustedDurations.map(d=>`${d.toFixed(1)}s`).join(' • ')}</div>
                       <div style={{marginTop:6}}>Current water level: {(waterLevel*100).toFixed(0)}%</div>
                     </div>
