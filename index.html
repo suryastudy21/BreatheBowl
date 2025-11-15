@@ -51,6 +51,8 @@
       /* water tones — gradient between muted teal and soft blue */
       --water-1: #6fb1c9;
       --water-2: #3a8fb7;
+      --slider-water: var(--water-2);
+      --marker-color: var(--water-2);
 
       /* svg rim and bowl detailing */
       --svg-stroke: #b7c4cf;
@@ -75,6 +77,8 @@
 
       --water-1: #e79e71;    /* slightly richer warm peach for animation */
       --water-2: #c95f34;    /* more saturated terracotta for depth */
+      --slider-water: var(--water-2);
+      --marker-color: var(--water-2);
 
       --svg-stroke: #d9c9bd; /* a touch darker so icons are legible */
       --inner-rim: #efe6de;  /* subtle inner rim highlight */
@@ -177,6 +181,7 @@
 
       /* brighter teal just for slider in dark (non-warm) */
       --slider-water: rgb(86, 140, 150);
+      --marker-color: rgb(86, 140, 150);
     }
 
     /* Warm mode for dark theme */
@@ -209,6 +214,7 @@
 
       /* override slider color in warm dark: use warm water, not teal */
       --slider-water: rgb(187, 115, 66); /* R:0.732 G:0.450 B:0.258 */
+      --marker-color: rgb(187, 115, 66);
     }
 
     /* ensure title is white in dark mode */
@@ -419,7 +425,7 @@
       width:2px;
       height:8px;
       border-radius:999px;
-      background: color-mix(in srgb, var(--slider-water, var(--water-2)) 60%, var(--card-bg) 40%);
+      background: var(--marker-color, color-mix(in srgb, var(--slider-water, var(--water-2)) 60%, var(--card-bg) 40%));
       opacity:0.85;
       pointer-events:none;
     }
