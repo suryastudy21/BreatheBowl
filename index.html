@@ -18,10 +18,6 @@
 
       /* --- dimmer light-cool overlay (non-warm, non-dark) --- */
 
-.app-root.dark ellipse {
-  display: none;
-}
-
 /* --- brighter cards in dark warm --- */
 .app-root.dark.warm {
   --card-bg: rgba(52,26,16,0.92); /* lighter/brighter card surface */
@@ -524,7 +520,7 @@
                         <g className="wave-glow">
                           <path d={wavePath} fill="url(#waterGrad)" opacity="0.98" />
                           <path d={wavePath} fill="var(--water-2)" opacity="0.14" transform="translate(0,6)" />
-                          <ellipse cx={cx + 18} cy={Math.max(topOfCircle + 6, topY - r * 0.12)} rx="18" ry="6" fill="rgba(255,255,255,0.14)" />
+
                         </g>
                       </g>
 
