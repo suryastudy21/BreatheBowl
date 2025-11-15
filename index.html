@@ -282,7 +282,12 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
 
     /* Warm mode for dark theme */
     .app-root.dark.warm {
-      --bg: linear-gradient(180deg, #2b1810 0%, #140a06 70%);
+      --bg: linear-gradient(
+            180deg,
+    #200f08 0%,   /* darkest (top), warm version of #081420 */
+    #2a160d 50%,  /* mid, warm version of #0d1e2a */
+    #331c12 100% 
+      );
       --card-bg: rgba(28,14,8,0.92);
       --card-backdrop-blur: 12px;
       --card-shadow: 0 14px 40px rgba(30,12,6,0.6);
@@ -302,7 +307,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       --svg-stroke: rgba(255,245,235,0.08);
       --inner-rim: rgba(255,230,210,0.04);
 
-      --vignette-alpha: 0.22;
+      --vignette-alpha: 0.10;
       --wave-glow: rgba(150,80,30,0.20);
 
       /* warmer lantern-like card glow when warm + running */
