@@ -109,6 +109,16 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
     /* Card */
     .container{width:100%;max-width:1100px}
     .row{display:flex;gap:24px}
+    @media (max-width: 900px){
+      .row{
+        flex-direction: column;
+      }
+      .card.large,
+      .card.side{
+        flex: none;
+        width: 100%;
+      }
+    }
 .card{border-radius:18px;padding:20px;background:var(--card-bg);color:var(--text);box-shadow:0 6px 18px var(--ring);}
     .card.large{flex:2}
     .card.side{flex:1}
@@ -124,6 +134,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       display:flex;
       gap:8px;
       align-items:center;
+      margin-left:auto;
     }
 
     .segmented-toggle{
@@ -408,7 +419,9 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
     .svg-frame{
       width: 100%;
       max-width: 640px;
-      height: 420px;
+      aspect-ratio: 1 / 1;
+      height: auto;
+      max-height: 70vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -436,23 +449,62 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       align-items: center;
       justify-content: space-between;
       box-sizing: border-box;
+      flex-wrap: nowrap; /* default: keep all three on one row when there's room */
     }
 
     /* Make primary controls (start/stop) fixed width while sliders expand */
     .controls .btn, .controls-row .btn{
-      flex: 0 0 130px;
+      flex: 0 1 130px;
       min-width: 110px;
     }
     .controls .slider, .controls .input, .controls-row .slider{
       flex: 1 1 auto;
     }
 
+    /* Medium screens: keep buttons in a row, move speed control below them */
+    @media (max-width: 800px) and (min-width: 521px){
+      .controls, .controls-row{
+        flex-wrap: wrap;
+      }
+      .speed-control{
+        flex-basis: 100%;
+        margin-left: 0;
+      }
+    }
+
     /* For vertical stacking on small screens */
     @media (max-width: 520px){
-      .card{ padding: 18px; }
-      .svg-frame{ height: 320px; }
-      .controls, .controls-row{ flex-direction: column; align-items: stretch; gap:10px; }
-      .controls .btn, .controls-row .btn{ width: 100%; flex: none; }
+      .app-root{
+        padding: 16px;
+        align-items: flex-start;
+      }
+      .title{
+        display: none;
+      }
+      .header{
+        justify-content: flex-start;
+      }
+      .card{ 
+        padding: 18px; 
+      }
+      .svg-frame{
+        max-width: 100%;
+      }
+      .controls, .controls-row{ 
+        flex-direction: column; 
+        align-items: stretch; 
+        gap:10px; 
+      }
+      .controls .btn, .controls-row .btn{ 
+        width: 100%; 
+        flex: none; 
+      }
+      .speed-control{
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        align-self: stretch;
+      }
     }
 
     /* ===== Speed control styling ===== */
@@ -465,7 +517,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       background: color-mix(in srgb, var(--card-bg) 88%, var(--muted) 12%);
       box-shadow: 0 4px 10px var(--ring);
       min-width: 220px;
-      margin-left: 12px;
+      margin-left: 0;
     }
 
     .speed-header{
