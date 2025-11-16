@@ -254,7 +254,11 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       margin-left: auto;
     }
 
-    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.grid-2{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
     .input-number,.input-text{padding:8px;border-radius:8px;border:1px solid var(--input-border);background:transparent;color:var(--text)}
     .muted{color:var(--muted);font-size:13px}
 
@@ -534,6 +538,10 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
         max-width: none;
         margin: 0;
         align-self: center;
+      }
+      .input-number{
+        width:100%;
+        box-sizing:border-box;
       }
     }
 
@@ -1045,7 +1053,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                     <label style={{fontSize:13,fontWeight:600}}>Preview</label>
                     <div className="muted" style={{marginTop:8}}>
                       <div>Cycle (input): {durations.map(d=>`${d}s`).join(' • ')}</div>
-                      <div>Speed: {speedLabel(bpmMultiplier)} ({speedDescriptor(bpmMultiplier)})</div>
+                      <div style={{marginTop:6}}>Speed: {speedLabel(bpmMultiplier)} ({speedDescriptor(bpmMultiplier)})</div>
                       <div style={{marginTop:6}}>Adjusted cycle: {adjustedDurations.map(d=>`${d.toFixed(1)}s`).join(' • ')}</div>
                       <div style={{marginTop:6}}>Current water level: {(waterLevel*100).toFixed(0)}%</div>
                     </div>
