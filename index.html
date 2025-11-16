@@ -669,6 +669,17 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       color:var(--muted);
       white-space:nowrap;
     }
+    .speed-end-button{
+      font-size:11px;
+      color:var(--muted);
+      white-space:nowrap;
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      font-family: inherit;
+    }
 
     /* wrapper to align the marker with the actual track */
     .speed-slider-shell{
@@ -810,7 +821,6 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       const rafRef = useRef(null);
       const phaseStartRef = useRef(null);
       const lastTimeRef = useRef(null);
-      const speedTouchRef = useRef(null);
 
       useEffect(()=>{
         setDurations(presets[presetName] ? presets[presetName] : presets.custom);
@@ -871,48 +881,6 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       },[running,loopIndex,durations,bpmMultiplier]);
 
       function clamp(v,a,b){return Math.min(b,Math.max(a,v))}
-
-      function handleSpeedTouchStart(e){
-        if (!isMobile) return;
-        if (!e.touches || e.touches.length === 0) return;
-        const touch = e.touches[0];
-        speedTouchRef.current = {
-          startY: touch.clientY,
-          startValue: bpmMultiplier
-        };
-      }
-
-      function handleSpeedTouchMove(e){
-        if (!isMobile) return;
-        if (!speedTouchRef.current) return;
-        if (e.cancelable) e.preventDefault();
-        if (!e.touches || e.touches.length === 0) return;
-        const touch = e.touches[0];
-        const dy = touch.clientY - speedTouchRef.current.startY;
-
-        // Small dead-zone to avoid jitter from tiny finger tremors
-        if (Math.abs(dy) < 6) return;
-
-        const minSpeed = 0.25;
-        const maxSpeed = 2;
-        const span = maxSpeed - minSpeed;
-        const pxPerFullRange = 260; // more pixels for full range = smoother control
-        const delta = -(dy / pxPerFullRange) * span; // drag up -> faster, down -> slower
-
-        const rawNext = speedTouchRef.current.startValue + delta;
-        const clamped = clamp(rawNext, minSpeed, maxSpeed);
-
-        // Quantize to slider step to keep motion stable
-        const step = 0.05;
-        const quantized = Math.round(clamped / step) * step;
-        if (quantized === bpmMultiplier) return;
-
-        setBpmMultiplier(quantized);
-      }
-
-      function handleSpeedTouchEnd(){
-        speedTouchRef.current = null;
-      }
 
       function toggle(){
         if(running){
@@ -1136,7 +1104,17 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                       </div>
 
                       <div className="speed-slider-row">
-                        <span className="speed-end-label">Slower</span>
+                        <button
+                          type="button"
+                          className="speed-end-button"
+                          onClick={() =>
+                            setBpmMultiplier(prev =>
+                              clamp(prev - 0.05, minSpeed, maxSpeed)
+                            )
+                          }
+                        >
+                          Slower
+                        </button>
                         <div className="speed-slider-shell">
                           <input
                             className="speed-slider"
@@ -1146,13 +1124,20 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                             step="0.05"
                             value={bpmMultiplier}
                             onChange={(e)=>setBpmMultiplier(Number(e.target.value))}
-                            onTouchStart={handleSpeedTouchStart}
-                            onTouchMove={handleSpeedTouchMove}
-                            onTouchEnd={handleSpeedTouchEnd}
                             style={{ '--marker-pos': (neutralPos + 0.27) + '%' }}
                           />
                         </div>
-                        <span className="speed-end-label">Faster</span>
+                        <button
+                          type="button"
+                          className="speed-end-button"
+                          onClick={() =>
+                            setBpmMultiplier(prev =>
+                              clamp(prev + 0.05, minSpeed, maxSpeed)
+                            )
+                          }
+                        >
+                          Faster
+                        </button>
                       </div>
                     </div>
                     {isMobile && (
