@@ -678,20 +678,6 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       align-items:center;
     }
 
-    /* center marker at 1x */
-    .speed-slider-shell::before{
-      content:"";
-      position:absolute;
-      left:44%;
-      transform:translateX(-50%);
-      width:2px;
-      height:8px;
-      border-radius:999px;
-      background: var(--marker-color, color-mix(in srgb, var(--slider-water, var(--water-2)) 60%, var(--card-bg) 40%));
-      opacity:0.85;
-      pointer-events:none;
-    }
-
     .speed-slider{
       flex:1;
       -webkit-appearance:none;
@@ -718,12 +704,20 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
     .speed-slider::-webkit-slider-runnable-track{
       height:4px;
       border-radius:999px;
-      background: linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--water-1) 40%, transparent 60%),
-        color-mix(in srgb, var(--water-1) 70%, transparent 30%),
-        color-mix(in srgb, var(--slider-water, var(--water-2)) 100%, transparent 0%)
-      );
+      background:
+        linear-gradient(
+          to right,
+          transparent calc(var(--marker-pos, 42.86%) - 1.5px),
+          var(--marker-color, var(--slider-water, var(--water-2))) calc(var(--marker-pos, 42.86%) - 1.5px),
+          var(--marker-color, var(--slider-water, var(--water-2))) calc(var(--marker-pos, 42.86%) + 1.5px),
+          transparent calc(var(--marker-pos, 42.86%) + 1.5px)
+        ),
+        linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--water-1) 40%, transparent 60%),
+          color-mix(in srgb, var(--water-1) 70%, transparent 30%),
+          color-mix(in srgb, var(--slider-water, var(--water-2)) 100%, transparent 0%)
+        );
     }
 
     /* ---------- Firefox ---------- */
@@ -740,12 +734,20 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
     .speed-slider::-moz-range-track{
       height:4px;
       border-radius:999px;
-      background: linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--water-1) 40%, transparent 60%),
-        color-mix(in srgb, var(--water-1) 70%, transparent 30%),
-        color-mix(in srgb, var(--slider-water, var(--water-2)) 100%, transparent 0%)
-      );
+      background:
+        linear-gradient(
+          to right,
+          transparent calc(var(--marker-pos, 42.86%) - 1.5px),
+          var(--marker-color, var(--slider-water, var(--water-2))) calc(var(--marker-pos, 42.86%) - 1.5px),
+          var(--marker-color, var(--slider-water, var(--water-2))) calc(var(--marker-pos, 42.86%) + 1.5px),
+          transparent calc(var(--marker-pos, 42.86%) + 1.5px)
+        ),
+        linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--water-1) 40%, transparent 60%),
+          color-mix(in srgb, var(--water-1) 70%, transparent 30%),
+          color-mix(in srgb, var(--slider-water, var(--water-2)) 100%, transparent 0%)
+        );
     }
   </style>
 </head>
@@ -921,6 +923,10 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
 
       const adjustedDurations = durations.map(d=>d/Math.max(0.0001,bpmMultiplier));
       const showAdjusted = Math.abs(bpmMultiplier - 1) > 0.0001;
+      const minSpeed = 0.25;
+      const maxSpeed = 2;
+      const neutralSpeed = 1;
+      const neutralPos = ((neutralSpeed - minSpeed) / (maxSpeed - minSpeed)) * 100;
 
       function addPattern(){
         const autoName = durations.join('-').replaceAll(' ','');
@@ -1097,6 +1103,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                             step="0.05"
                             value={bpmMultiplier}
                             onChange={(e)=>setBpmMultiplier(Number(e.target.value))}
+                            style={{ '--marker-pos': (neutralPos + 0.7) + '%' }}
                           />
                         </div>
                         <span className="speed-end-label">Faster</span>
