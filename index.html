@@ -248,10 +248,81 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       gap:8px;
       flex-wrap:wrap;
       justify-content:space-between;
+      padding:6px 10px;
+      border-radius:999px;
+      background: color-mix(in srgb, var(--card-bg) 92%, var(--accent) 8%);
+      box-shadow: 0 1px 3px var(--ring);
+      transition: background 0.12s ease, box-shadow 0.12s ease, transform 0.10s ease;
+    }
+
+    .pattern-row:hover{
+      background: color-mix(in srgb, var(--card-bg) 86%, var(--accent) 14%);
+      box-shadow: 0 2px 6px var(--ring);
+      transform: translateY(-0.5px);
+    }
+
+    .pattern-row--active{
+      background: color-mix(in srgb, var(--accent) 82%, var(--card-bg) 18%);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 75%, #ffffff 25%), 0 4px 10px var(--ring);
+      color:#ffffff;
+    }
+
+    .pattern-row--active:hover{
+      background: color-mix(in srgb, var(--accent) 90%, var(--card-bg) 10%);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 85%, #ffffff 15%), 0 6px 14px var(--ring);
+      transform: translateY(-1px) scale(1.01);
+    }
+
+    .pattern-row--active .muted{
+      color: color-mix(in srgb, #ffffff 80%, var(--card-bg) 20%);
     }
 
     .pattern-row .btn {
       margin-left: auto;
+    }
+
+    /* Theme-matched custom radios for pattern selector */
+    .pattern-row input[type="radio"]{
+      appearance:none;
+      -webkit-appearance:none;
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      border:2px solid color-mix(in srgb, var(--muted) 70%, var(--card-bg) 30%);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background: color-mix(in srgb, var(--card-bg) 90%, var(--accent) 10%);
+      position:relative;
+      cursor:pointer;
+      transition:border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .pattern-row input[type="radio"]::after{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background: var(--accent);
+      opacity:0;
+      transform:scale(0.6);
+      transition:opacity 0.16s ease, transform 0.16s ease;
+    }
+
+    .pattern-row input[type="radio"]:checked{
+      border-color: color-mix(in srgb, var(--accent) 80%, #ffffff 20%);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent 75%);
+      background: color-mix(in srgb, var(--card-bg) 70%, var(--accent) 30%);
+    }
+
+    .pattern-row input[type="radio"]:checked::after{
+      opacity:1;
+      transform:scale(1);
+    }
+
+    .pattern-row input[type="radio"]:focus-visible{
+      outline:2px solid var(--ring);
+      outline-offset:3px;
     }
 
 .grid-2{
@@ -502,7 +573,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
         padding: 18px; 
       }
       .card.large{
-        min-height: 80vh;
+        min-height: 90vh;
       }
       .card.side{
         width: 100%;
@@ -713,7 +784,10 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       const [loopIndex,setLoopIndex] = useState(0);
       const [phaseProgress,setPhaseProgress] = useState(0);
       const [waterLevel,setWaterLevel] = useState(0);
-      const [bpmMultiplier,setBpmMultiplier] = useState(1);
+      const [bpmMultiplier,setBpmMultiplier] = useState(1.25);
+      const [isMobile,setIsMobile] = useState(
+        typeof window !== 'undefined' ? window.innerWidth <= 520 : false
+      );
       const [dark,setDark] = useState(false);
       const [warm,setWarm] = useState(false);
       const [newPatternName,setNewPatternName] = useState('');
@@ -833,6 +907,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       }
 
       const adjustedDurations = durations.map(d=>d/Math.max(0.0001,bpmMultiplier));
+      const showAdjusted = Math.abs(bpmMultiplier - 1) > 0.0001;
 
       function addPattern(){
         const autoName = durations.join('-').replaceAll(' ','');
@@ -875,6 +950,16 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
         if(dark) document.documentElement.classList.add('dark-root');
         else document.documentElement.classList.remove('dark-root');
       },[dark]);
+
+      useEffect(()=>{
+        function handleResize(){
+          if (typeof window === 'undefined') return;
+          setIsMobile(window.innerWidth <= 520);
+        }
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+      },[]);
 
       return (
         <div className={"app-root" + (dark? ' dark' : '') + (warm? ' warm' : '')}>
@@ -996,6 +1081,21 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                         <span className="speed-end-label">Faster</span>
                       </div>
                     </div>
+                    {isMobile && showAdjusted && (
+                      <div
+                        style={{
+                          marginTop: 20,
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <div className="muted" style={{ textAlign: 'center' }}>
+                          Adjusted cycle: {adjustedDurations.map(d=>`${d.toFixed(1)}s`).join(' • ')}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                 </div>
@@ -1006,12 +1106,27 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                   <label style={{fontSize:13,fontWeight:600}}>Pattern</label>
                   <div className="pattern-list">
                     {presetKeys.map(k=> (
-                      <div className="pattern-row" key={k}>
-                        <label style={{cursor:'pointer', display:'flex', alignItems:'center', gap:8}} onClick={()=>setPresetName(k)}>
-                          <input type="radio" checked={presetName===k} readOnly style={{marginRight:8}} /> {k}
+                      <div
+                        className={"pattern-row" + (presetName===k ? " pattern-row--active" : "")}
+                        key={k}
+                        onClick={()=>setPresetName(k)}
+                      >
+                        <label style={{cursor:'pointer', display:'flex', alignItems:'center', gap:8}}>
+                          <input
+                            type="radio"
+                            checked={presetName===k}
+                            readOnly
+                          />
+                          {k}
                         </label>
                         {k!=='custom' && (
-                          <button className="btn" onClick={()=>deletePattern(k)} title={`Delete ${k}`}>Delete</button>
+                          <button
+                            className="btn"
+                            onClick={(e)=>{e.stopPropagation(); deletePattern(k);}}
+                            title={`Delete ${k}`}
+                          >
+                            Delete
+                          </button>
                         )}
                       </div>
                     ))}
@@ -1049,15 +1164,15 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                     </div>
                   </div>
 
-                  <div style={{marginTop:12}}>
-                    <label style={{fontSize:13,fontWeight:600}}>Preview</label>
-                    <div className="muted" style={{marginTop:8}}>
-                      <div>Cycle (input): {durations.map(d=>`${d}s`).join(' • ')}</div>
-                      <div style={{marginTop:6}}>Speed: {speedLabel(bpmMultiplier)} ({speedDescriptor(bpmMultiplier)})</div>
-                      <div style={{marginTop:6}}>Adjusted cycle: {adjustedDurations.map(d=>`${d.toFixed(1)}s`).join(' • ')}</div>
-                      <div style={{marginTop:6}}>Current water level: {(waterLevel*100).toFixed(0)}%</div>
+
+                  {!isMobile && showAdjusted && (
+                    <div style={{marginTop:12}}>
+                      <label style={{fontSize:13,fontWeight:600}}>Adjusted cycle</label>
+                      <div className="muted" style={{marginTop:8}}>
+                        {adjustedDurations.map(d=>`${d.toFixed(1)}s`).join(' • ')}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                 </div>
               </div>
