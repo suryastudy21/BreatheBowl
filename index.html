@@ -810,6 +810,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       const rafRef = useRef(null);
       const phaseStartRef = useRef(null);
       const lastTimeRef = useRef(null);
+      const speedTouchRef = useRef(null);
 
       useEffect(()=>{
         setDurations(presets[presetName] ? presets[presetName] : presets.custom);
@@ -870,6 +871,36 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       },[running,loopIndex,durations,bpmMultiplier]);
 
       function clamp(v,a,b){return Math.min(b,Math.max(a,v))}
+
+      function handleSpeedTouchStart(e){
+        if (!isMobile) return;
+        if (!e.touches || e.touches.length === 0) return;
+        const touch = e.touches[0];
+        speedTouchRef.current = {
+          startY: touch.clientY,
+          startValue: bpmMultiplier
+        };
+      }
+
+      function handleSpeedTouchMove(e){
+        if (!isMobile) return;
+        if (!speedTouchRef.current) return;
+        if (e.cancelable) e.preventDefault();
+        if (!e.touches || e.touches.length === 0) return;
+        const touch = e.touches[0];
+        const dy = touch.clientY - speedTouchRef.current.startY;
+        const minSpeed = 0.25;
+        const maxSpeed = 2;
+        const span = maxSpeed - minSpeed;
+        const pxPerFullRange = 180; // how many pixels of vertical drag for full range
+        const delta = -(dy / pxPerFullRange) * span; // drag up -> faster, down -> slower
+        const next = clamp(speedTouchRef.current.startValue + delta, minSpeed, maxSpeed);
+        setBpmMultiplier(next);
+      }
+
+      function handleSpeedTouchEnd(){
+        speedTouchRef.current = null;
+      }
 
       function toggle(){
         if(running){
@@ -1103,6 +1134,9 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                             step="0.05"
                             value={bpmMultiplier}
                             onChange={(e)=>setBpmMultiplier(Number(e.target.value))}
+                            onTouchStart={handleSpeedTouchStart}
+                            onTouchMove={handleSpeedTouchMove}
+                            onTouchEnd={handleSpeedTouchEnd}
                             style={{ '--marker-pos': (neutralPos + 0.27) + '%' }}
                           />
                         </div>
