@@ -242,7 +242,12 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
     .panel-section{display:flex;flex-direction:column;gap:8px}
     .radio-row{display:flex;align-items:center;justify-content:space-between}
     .pattern-list{display:flex;flex-direction:column;gap:8px}
-    .pattern-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .pattern-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
 
     .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
     .input-number,.input-text{padding:8px;border-radius:8px;border:1px solid var(--input-border);background:transparent;color:var(--text)}
@@ -401,7 +406,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
     }
 
     /* Card becomes a centered flexible column that fills available width */
-    .app-root .card{
+    .app-root .card.large{
       display: flex !important;
       flex-direction: column;
       align-items: center;
@@ -494,13 +499,15 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       }
       .pattern-row{
         flex-wrap: wrap;
-        align-items: flex-start;
+        align-items: center;
       }
       .pattern-row > label{
-        flex: 1 1 100%;
+        flex: 1 1 auto;
+        min-width: 0;
       }
       .pattern-row .btn{
-        margin-top: 6px;
+        flex: 0 0 auto;
+        margin-top: 0;
       }
       .svg-frame{
         max-width: 100%;
@@ -518,7 +525,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
         width: 100%;
         max-width: none;
         margin: 0;
-        align-self: stretch;
+        align-self: center;
       }
     }
 
@@ -984,7 +991,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                   <div className="pattern-list">
                     {presetKeys.map(k=> (
                       <div className="pattern-row" key={k}>
-                        <label style={{flex:1,cursor:'pointer'}} onClick={()=>setPresetName(k)}>
+                        <label style={{cursor:'pointer', display:'flex', alignItems:'center', gap:8}} onClick={()=>setPresetName(k)}>
                           <input type="radio" checked={presetName===k} readOnly style={{marginRight:8}} /> {k}
                         </label>
                         {k!=='custom' && (
