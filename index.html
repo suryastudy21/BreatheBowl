@@ -889,13 +889,25 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
         if (!e.touches || e.touches.length === 0) return;
         const touch = e.touches[0];
         const dy = touch.clientY - speedTouchRef.current.startY;
+
+        // Small dead-zone to avoid jitter from tiny finger tremors
+        if (Math.abs(dy) < 6) return;
+
         const minSpeed = 0.25;
         const maxSpeed = 2;
         const span = maxSpeed - minSpeed;
-        const pxPerFullRange = 180; // how many pixels of vertical drag for full range
+        const pxPerFullRange = 260; // more pixels for full range = smoother control
         const delta = -(dy / pxPerFullRange) * span; // drag up -> faster, down -> slower
-        const next = clamp(speedTouchRef.current.startValue + delta, minSpeed, maxSpeed);
-        setBpmMultiplier(next);
+
+        const rawNext = speedTouchRef.current.startValue + delta;
+        const clamped = clamp(rawNext, minSpeed, maxSpeed);
+
+        // Quantize to slider step to keep motion stable
+        const step = 0.05;
+        const quantized = Math.round(clamped / step) * step;
+        if (quantized === bpmMultiplier) return;
+
+        setBpmMultiplier(quantized);
       }
 
       function handleSpeedTouchEnd(){
