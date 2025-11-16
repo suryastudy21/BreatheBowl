@@ -125,7 +125,11 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
     }
 .card{border-radius:18px;padding:20px;background:var(--card-bg);color:var(--text);box-shadow:0 6px 18px var(--ring);box-sizing:border-box;}
     .card.large{flex:2}
-    .card.side{flex:1}
+    .card.side{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+    }
 
     /* Header */
     .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
@@ -243,7 +247,20 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
     .range{align-self:center}
 
     /* Side panel */
-    .panel-section{display:flex;flex-direction:column;gap:8px}
+    .panel-section{
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+      justify-content:space-between;
+      gap:50px; /* minimum vertical spacing between Pattern, Durations, Adjusted cycle */
+      height:100%;
+    }
+
+    .panel-block{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
     .radio-row{display:flex;align-items:center;justify-content:space-between}
     .pattern-list{display:flex;flex-direction:column;gap:8px}
     .pattern-row{
@@ -283,6 +300,8 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
 
     .pattern-row .btn {
       margin-left: auto;
+      padding: 4px 8px;
+      font-size: 11px;
     }
 
     /* Theme-matched custom radios for pattern selector */
@@ -298,6 +317,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       justify-content:center;
       background: color-mix(in srgb, var(--card-bg) 90%, var(--accent) 10%);
       position:relative;
+      margin-bottom: 3px;
       cursor:pointer;
       transition:border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
     }
@@ -827,7 +847,20 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       const lastTimeRef = useRef(null);
 
       useEffect(()=>{
-        setDurations(presets[presetName] ? presets[presetName] : presets.custom);
+        let next = presets[presetName];
+        if (!next) {
+          if (presets.custom) {
+            next = presets.custom;
+          } else {
+            const keys = Object.keys(presets);
+            if (keys.length > 0) {
+              next = presets[keys[0]];
+            } else {
+              next = initialPresets['4-4-4-4'];
+            }
+          }
+        }
+        setDurations(next);
       },[presetName,presets]);
 
       function targetForPhase(phase){
@@ -956,10 +989,29 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
         if(!name || !presets[name]) return;
         const mustKeep=['custom'];
         if(mustKeep.includes(name)) return;
+
         const copy = {...presets};
         delete copy[name];
+
+        let nextPreset = presetName;
+        if (presetName === name) {
+          const remainingKeys = Object.keys(copy).filter(k => k !== 'custom');
+          if (remainingKeys.length > 0) {
+            // prefer any remaining preset; if 4-4-4-4 exists, still fine to use it,
+            // but when everything is gone, we fall back to custom
+            nextPreset = remainingKeys.includes('4-4-4-4') ? '4-4-4-4' : remainingKeys[0];
+          } else {
+            // no non-custom presets left; ensure a custom preset exists and select it
+            if (!copy.custom) {
+              const base = (durations && durations.length === 4) ? durations : initialPresets['4-4-4-4'];
+              copy.custom = [...base];
+            }
+            nextPreset = 'custom';
+          }
+        }
+
         setPresets(copy);
-        if(presetName===name) setPresetName('custom');
+        setPresetName(nextPreset);
       }
 
       useEffect(() => {
@@ -1166,37 +1218,39 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
 
               <div className="card side">
                 <div className="panel-section">
-                  <label style={{fontSize:13,fontWeight:600}}>Pattern</label>
-                  <div className="pattern-list">
-                    {presetKeys.map(k=> (
-                      <div
-                        className={"pattern-row" + (presetName===k ? " pattern-row--active" : "")}
-                        key={k}
-                        onClick={()=>setPresetName(k)}
-                      >
-                        <label style={{cursor:'pointer', display:'flex', alignItems:'center', gap:8}}>
-                          <input
-                            type="radio"
-                            checked={presetName===k}
-                            readOnly
-                          />
-                          {k}
-                        </label>
-                        {k!=='custom' && (
-                          <button
-                            className="btn"
-                            onClick={(e)=>{e.stopPropagation(); deletePattern(k);}}
-                            title={`Delete ${k}`}
-                          >
-                            Delete
-                          </button>
-                        )}
-                      </div>
-                    ))}
+                  <div className="panel-block">
+                    <label style={{fontSize:16,fontWeight:600}}>Pattern</label>
+                    <div className="pattern-list">
+                      {presetKeys.map(k=> (
+                        <div
+                          className={"pattern-row" + (presetName===k ? " pattern-row--active" : "")}
+                          key={k}
+                          onClick={()=>setPresetName(k)}
+                        >
+                          <label style={{cursor:'pointer', display:'flex', alignItems:'center', gap:8, fontSize:13}}>
+                            <input
+                              type="radio"
+                              checked={presetName===k}
+                              readOnly
+                            />
+                            {k}
+                          </label>
+                          {k!=='custom' && (
+                            <button
+                              className="btn"
+                              onClick={(e)=>{e.stopPropagation(); deletePattern(k);}}
+                              title={`Delete ${k}`}
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
-                  <div>
-                    <label style={{fontSize:13,fontWeight:600}}>Durations (s)</label>
+                  <div className="panel-block">
+                    <label style={{fontSize:15,fontWeight:600}}>Durations (s)</label>
                     <div className="grid-2" style={{marginTop:8}}>
                       <div style={{display:'flex',flexDirection:'column'}}>
                         <label style={{fontSize:12}}>Inhale</label>
@@ -1218,19 +1272,23 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                     </div>
 
                     <div style={{marginTop:10}}>
-                      <input type="text" placeholder="pattern name (optional)" className="input-text" value={newPatternName} onChange={(e)=>setNewPatternName(e.target.value)} />
-
-                      <div style={{display:'flex',gap:8,justifyContent:'flex-end',marginTop:8}}>
+                      <div style={{display:'flex',gap:8,alignItems:'center'}}>
+                        <input
+                          type="text"
+                          placeholder="pattern name (optional)"
+                          className="input-text"
+                          value={newPatternName}
+                          onChange={(e)=>setNewPatternName(e.target.value)}
+                          style={{flex:1}}
+                        />
                         <button className="btn primary" onClick={addPattern}>Add</button>
-                        <button className="btn" onClick={()=>deletePattern(presetName)} title="Delete selected pattern">Delete</button>
                       </div>
                     </div>
                   </div>
 
-
                   {!isMobile && (
-                    <div style={{marginTop:12}}>
-                      <label style={{fontSize:13,fontWeight:600}}>Adjusted cycle</label>
+                    <div className="panel-block">
+                      <label style={{fontSize:15,fontWeight:600}}>Adjusted cycle</label>
                       <div className="muted" style={{marginTop:8}}>
                         {adjustedDurations.map(d=>`${d.toFixed(1)}s`).join(' • ')}
                       </div>
