@@ -784,7 +784,20 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       const [loopIndex,setLoopIndex] = useState(0);
       const [phaseProgress,setPhaseProgress] = useState(0);
       const [waterLevel,setWaterLevel] = useState(0);
-      const [bpmMultiplier,setBpmMultiplier] = useState(1.25);
+      const [bpmMultiplier,setBpmMultiplier] = useState(()=>{
+        if (typeof window === 'undefined') return 1.25;
+        try{
+          const saved = localStorage.getItem('breathing-speed');
+          if (saved == null) return 1.25;
+          const num = Number(saved);
+          if (!Number.isFinite(num)) return 1.25;
+          // clamp to slider range just in case
+          return Math.min(2, Math.max(0.25, num));
+        } catch (e) {
+          console.error("Error loading speed:", e);
+          return 1.25;
+        }
+      });
       const [isMobile,setIsMobile] = useState(
         typeof window !== 'undefined' ? window.innerWidth <= 520 : false
       );
@@ -935,6 +948,14 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
           console.error("Error saving presets:", e);
         }
       }, [presets]);
+
+      useEffect(() => {
+        try {
+          localStorage.setItem("breathing-speed", String(bpmMultiplier));
+        } catch (e) {
+          console.error("Error saving speed:", e);
+        }
+      }, [bpmMultiplier]);
 
       const presetKeys = Object.keys(presets).filter(k=>k!=='custom');
       if(presets.custom) presetKeys.push('custom');
