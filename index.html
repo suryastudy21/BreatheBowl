@@ -675,6 +675,12 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       border-radius:999px;
       background: color-mix(in srgb, var(--card-bg) 80%, var(--muted) 20%);
       font-size:12px;
+      cursor:pointer;
+      border:none;
+      outline:none;
+      -webkit-appearance:none;
+      appearance:none;
+      font-family:inherit;
     }
 
     .speed-chip-sub{
@@ -835,6 +841,8 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
           return 1.25;
         }
       });
+      // Remember previous speed before toggling to neutral
+      const prevSpeedRef = useRef(null);
       const [isMobile,setIsMobile] = useState(
         typeof window !== 'undefined' ? window.innerWidth <= 520 : false
       );
@@ -967,6 +975,28 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
         if (v < 1.1) return "Natural";
         if (v < 1.5) return "Fast";
         return "Very fast";
+      }
+
+      // Toggle between current speed and neutral (1x) on chip click
+      function handleSpeedChipClick() {
+        const neutralSpeed = 1;
+        const minSpeed = 0.25;
+        const maxSpeed = 2;
+
+        setBpmMultiplier(current => {
+          // If we're already at neutral, restore the previous speed if available.
+          if (Math.abs(current - neutralSpeed) < 1e-6) {
+            if (prevSpeedRef.current != null) {
+              const restored = clamp(prevSpeedRef.current, minSpeed, maxSpeed);
+              return restored;
+            }
+            return current;
+          }
+
+          // Otherwise, remember the current speed and go to neutral.
+          prevSpeedRef.current = current;
+          return neutralSpeed;
+        });
       }
 
       const adjustedDurations = durations.map(d=>d/Math.max(0.0001,bpmMultiplier));
@@ -1151,12 +1181,17 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                     <div className="speed-control">
                       <div className="speed-header">
                         <span className="speed-label">Speed</span>
-                        <span className="speed-chip">
+                        <button
+                          type="button"
+                          className="speed-chip"
+                          onClick={handleSpeedChipClick}
+                          title="Tap to toggle neutral speed"
+                        >
                           {speedLabel(bpmMultiplier)}
                           <span className="speed-chip-sub">
                             {speedDescriptor(bpmMultiplier)}
                           </span>
-                        </span>
+                        </button>
                       </div>
 
                       <div className="speed-slider-row">
