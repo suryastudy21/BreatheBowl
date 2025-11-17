@@ -274,6 +274,14 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       background: color-mix(in srgb, var(--card-bg) 92%, var(--accent) 8%);
       box-shadow: 0 1px 3px var(--ring);
       transition: background 0.12s ease, box-shadow 0.12s ease, transform 0.10s ease;
+      border:none;
+      outline:none;
+      cursor:pointer;
+      -webkit-appearance:none;
+      appearance:none;
+      font-family:inherit;
+      text-align:left;
+      width:100%;
     }
 
     .pattern-row:hover{
@@ -1257,7 +1265,8 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                     <label style={{fontSize:16,fontWeight:600}}>Pattern</label>
                     <div className="pattern-list">
                       {presetKeys.map(k=> (
-                        <div
+                        <button
+                          type="button"
                           className={"pattern-row" + (presetName===k ? " pattern-row--active" : "")}
                           key={k}
                           onClick={()=>setPresetName(k)}
@@ -1271,15 +1280,24 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
                             {k}
                           </label>
                           {k!=='custom' && (
-                            <button
+                            <span
                               className="btn"
+                              role="button"
+                              tabIndex={0}
                               onClick={(e)=>{e.stopPropagation(); deletePattern(k);}}
+                              onKeyDown={(e)=>{
+                                if(e.key === 'Enter' || e.key === ' '){
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  deletePattern(k);
+                                }
+                              }}
                               title={`Delete ${k}`}
                             >
                               Delete
-                            </button>
+                            </span>
                           )}
-                        </div>
+                        </button>
                       ))}
                     </div>
                   </div>
