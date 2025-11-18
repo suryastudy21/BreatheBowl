@@ -287,7 +287,6 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       font-family:inherit;
       text-align:left;
       width:100%;
-      color: #ffffff
     }
 
     .pattern-row:hover{
@@ -804,6 +803,13 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
           color-mix(in srgb, var(--slider-water, var(--water-2)) 100%, transparent 0%)
         );
     }
+    /* Pattern row text color: unselected */
+    .pattern-row { color: #000000; }
+    .app-root.dark .pattern-row { color: #ffffff; }
+
+    /* Ensure selected pattern keeps white text in all modes */
+    .pattern-row.pattern-row--active,
+    .pattern-row--active { color: #ffffff; }
   </style>
 </head>
 <body>
