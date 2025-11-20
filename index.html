@@ -317,6 +317,14 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
       font-size: 11px;
     }
 
+    /* Dark‑mode delete button uses theme surface color */
+    .app-root.dark .pattern-row .btn[role="button"] {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--input-border);
+    }
+
+    
     /* Theme-matched custom radios for pattern selector */
     .pattern-row input[type="radio"]{
       appearance:none;
