@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <title>Breathing Bowl — Warm Mode</title>
+  <title>Breathing Bowl — Warm Mode</title> 
 
   <!-- React + ReactDOM UMD builds -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -805,6 +805,9 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
     }
     /* Pattern row text color: unselected */
     .pattern-row { color: #000000; }
+    /* Ensure speed-chip text color matches theme */
+    .speed-chip { color: #000000; }
+    .app-root.dark .speed-chip { color: #ffffff; }
     .app-root.dark .pattern-row { color: #ffffff; }
 
     /* Ensure selected pattern keeps white text in all modes */
