@@ -806,8 +806,9 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Seg
     /* Pattern row text color: unselected */
     .pattern-row { color: #000000; }
     /* Ensure speed-chip text color matches theme */
-    .speed-chip { color: #000000; }
-    .app-root.dark .speed-chip { color: #ffffff; }
+    .speed-chip { color: var(--muted); }
+    /* Use theme-aware muted color so chip matches other labels (Speed/Slower/Faster) */
+    .app-root.dark .speed-chip { color: var(--muted); }
     .app-root.dark .pattern-row { color: #ffffff; }
 
     /* Ensure selected pattern keeps white text in all modes */
